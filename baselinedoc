@@ -1,0 +1,266 @@
+28Jan2025   Make  changeset 0 with mercurial using software  from Yu Shiu
+	    who  worked at Cornell University
+
+28Jan2025 data_prepare.py
+   Main program  that reads data  selection  table from output of Raven Pro
+   and creates info_q files as defined by data_intake_sbe_2d.m
+   This program does not work for reasons we do not understand, but this is the
+   code Spiesberger got  from Yu Shiu.
+
+
+28Jan2025 open_sound.py
+   Reads audiofiles.  Software from Yu Shiu
+
+28Jan2025 dsp/
+   subdirectory containing needed  python software, some of which is compiled.
+
+
+linux os serval (spiesberger's  laptop). This has no  data selection table
+28Jan2025 17:52 commit. Will be changeset 0
+----------------------------------------------------------------------------------------------
+28Jan2025 18:16 hg clone to  changes
+   Update software from Yash Samat to try and make data_prepare.py work on windows OS
+
+28Jan2025 open_sound.py
+   * Replace
+	from dsp.SampleStream import SampleStream, Streams
+     with
+        import sys
+        sys.path.append(os.path.dirname("C:/Users/samat/Downloads/dsp-20250105T061136Z-001/dsp/SampleStream.py"))
+     This last line pointing to SampleStream.py may no longer be  needed.
+   * Add this line
+        from SampleStream import SampleStream, Streams
+
+28Jan2025 data_prepare.py
+   * Made many changes to so it ran on Yash Samat's windows laptop with IDE ms visual studio.
+     There are many comments.
+
+28Jan2025 Start writing needed_python_libraries.txt
+  Lists version numbers of python libraries
+
+
+28Jan2025 19:51 this code generated info_1 and sound_1.wav for
+	  in visual studio using these data files
+	  on my google drive called raven_to_sbe/data/example1/
+	  There is a raven data selection table and wav file.
+	  In other words, code is working.  Needs to  be made more flexible,
+	  and the frequencies need to be changed instead of hardcoded.
+	  
+28Jan2025 17:54. serval laptop.  commit. Will be changeset 1
+----------------------------------------------------------------------------------------------
+30Jan2025 serval hg clone to  changes
+  Make data_prepare.py more flexible and remove much hard coded variables.Work  with Yash Samat
+
+
+
+30jan2025 data_prepare.py
+  * Call read_data_prepare_inputs.py at top to get values from data_prepare.py and remove many hard-coded lines
+  * Replace
+	# chan_id = list(range(1, num_chan+1))
+	chan_id = []
+    with
+	chan_id = list(range(1, num_chan+1))
+	# chan_id = []
+  * Replace
+	chan_map_old2new = {1: 2, 2: 3, 3: 4, 4: 5, 5: 1}
+        chan_map_new2old = {1: 5, 2: 1, 3: 2, 4: 3, 5: 4}
+   with
+	chan_map_old2new = {1: 2, 2: 3, 3: 4, 4: 1}
+	chan_map_new2old = {1: 4, 2: 1, 3: 2, 4: 3}
+   because we are trying to read a 4 channel wav file
+   * Comment out this line because the variable,  gap, is unused
+   * Comment out num_samples because is un-needed
+      num_samples = int(dur_wav*sample_rate)
+   * comment out this line because num_samples is unused:
+     dur_wav = 30.0  # amount of read wave duration
+   * Comment out these lines because they are incorrect:
+        if low_freq <= 50.0:  # right whale upcall lower bound
+            low_freq = 50.0
+   * Remove hard code sound id saying right whale and get values from raven pro data selection table
+     
+
+30Jan2025 Start writing data_prepare_inputs.txt
+    Ascii file containing inputs for data_prepare.py
+
+
+30Jan2025 Start writing read_data_prepare_inputs.py
+	  Reads data_prepare_inputs.txt. Written by Yash  Samat
+
+
+30Jan2025  open_sound.py
+   * Documented format for %Y%m%d_%H%M%S
+
+31Jan2025 SampleStream.py
+   Uncomment executable lines here:
+        # YuShiu: Nov 4, 2019
+        # # How many of the read samples can be stored to the history?
+        # storeN = min(readN, self._hist_size)
+        #
+        # if previousN:
+        #     if previousN + storeN > self._hist_size:
+        #         raise RuntimeError(
+        #             ("Attempted to read {} samples with {} samples " +
+        #              "of history when history only permits {} samples"
+        #              ).format(readN, previousN, self._hist_size))
+        #
+        #     # Take a slice of the history.  Note that when we update the history
+        #     # with np.roll, the pointers in previus_data still point to the same
+        #     # data, but if we physically modify the indices these values go away.
+        #     previous_data = self._hist[-previousN:,:]
+        #
+        #
+        # # add read data to history
+        # # We move the oldest entries into the end of the array with
+        # # numpy.roll and then populate the last entries
+        # self._hist = np.roll(self._hist, -storeN, axis=0)  # make room
+        # self._hist[-storeN:,:] = data[-storeN:, :]
+        # self._hist_avail = min(self._hist_avail + storeN, self._hist_size)
+
+3Feb2025 Want to move all  software in dsp to main directory and remove subdirectory, dsp/ from next commit.
+	 So type hg remove dsp
+	 
+3Feb2025 Start writing needed_python_libraries.txt
+   Lists versions of libraries needed to run python code.  Written by Yash Samat
+
+3Feb2025 Copied all software that worked for Yash Samat on his windows OS to here.
+	 Only subdirectory left is __pycache__
+
+3Feb2025 16:33. serval laptop.  commit. Will be changeset 2
+----------------------------------------------------------------------------------------------
+19Feb2025 16:14 serval hg clone to changes
+   Improve software
+
+19Feb2025 data_prepare.py
+   * Improve comments
+   * change min/max frequencies for info file to  be max of mins and min of max freqs
+   * Change
+          low_freq = df_one_call['Low Freq (Hz)'].min()
+     to
+             # low_freq is the maximum of the min frequencies for this Call ID = file_count
+             low_freq = df_one_call['Low Freq (Hz)'].max()
+     and change
+             high_freq = df_one_call['High Freq (Hz)'].max()
+     to
+             # high_freq is the minimum of the max frequencies for this Call ID = file_count
+             high_freq = df_one_call['High Freq (Hz)'].max()
+   * Remove this:
+           # if low_freq <= 50.0:  # right whale upcall lower bound #yash samat 2/2/2025: commented out
+           #    low_freq = 50.0
+   * Add this:
+       """if low_freq is greater than or equal to high_frreq, then set llow_freqq to the minimum of the min frequencies for this Call ID=file_count
+      and set high_freq to the maximum of the max frequenccies for this cAlll  ID = file_count"""
+       if low_freq >= high_freq:
+       	  low_freq=df_one_call['Low Freq (Hz)'].min()
+	  high_freq = df_one_call['High Freq (Hz)'].max();
+
+       """if low_freq is stil greater than or qual  to high_freq,  then exit the program with an  error  message."""
+       if low_freq >= high+freq:
+       	  exit('Error: low_freq  >= high_freq for Call_ID = '+str(file_count))
+   * Remove
+       # row 10: sampling rate
+       sample_rate = int(rdpi.get_sample_rate(inputs)) #yash samat 2/2/2025: get sample rate from list of inputs
+     and replace with a new line of ccode that gets sample_rate from calling get_sample_rate
+     and imported  get_sample_rate from open_sound.py  at top of program
+
+
+
+19Feb2025 data_prepare_input.txt
+   * Replace
+       Specify number of receivers in audio file outputed by raven pro.
+     with
+       Specify number of receivers in experiment. Same number as in data_intake_sbe_2d.m.  This may exceed number channels in audiofile from Raven Pro
+   * Remove this:
+       # Specify the sample rate (Hz) of audio file in raven pro.
+       2000
+
+19Feb2025 read_data_prepare_inputs.py
+   * Remove code that reads sample rate of audio file
+   
+
+19Feb2025 open_sound.py
+   * Yash added function called get_sample_rate.
+     It returns the sample rate of the audiofile.
+
+19Feb2025 17:27 these new programs worked for Yash Samat on his laptop.
+
+
+19Feb2025 17:30 serval laptop.  commit. Will be changeset 3
+----------------------------------------------------------------------------------------------
+10Mar2025 13:51 serval hg clone to changes
+   Fix bugs
+
+10Mar2025 data_prepare.py
+   * Found bug.  Program crashed when no calls were found on reference receiver.
+     We make program not crash when then happens and instead announces there
+     must be one sound selected on reference receiver.
+   * Comment out this code because a new channel  number may have no data.
+      if not (channel_ref in chan_id):
+        print('No reference ID')
+        continue
+     and channel_ref is not necessarily the reference receiver number (minus 1!)
+     
+
+10Mar2025 data_prepare_inputs.txt
+   * Improve comments for choice of reference receiver
+
+
+10Mar2025 We tested this software and it did not crash and
+   the info_N files looked reasonable.
+
+10Mar 2025 14:43 serval laptop.  commit. Will be changeset 4
+----------------------------------------------------------------------------------------------
+11Mar2025 17:20 serval hg clone to changes
+   Add program_tests to document successful software test of changeset 4. No change to software.
+
+
+11Mar 2025 14:43 serval laptop.  commit. Will be changeset 5
+----------------------------------------------------------------------------------------------
+12Mar2025 14:10 serval hg clone changes
+   Modify data_prepare.py, modify to read new data from Raven data selection table: before noise & after noise (s)
+
+
+12Mar2025 data_prepare.py
+   * Remove code that looked for Surrounding Noise and  replace with before noise and after noise.
+     and modify code to make info_N and sound_N.wav correctly
+
+12Mar2025 New headings in data selection table  look  like this:
+     Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	File Offset (s)	Begin File	Call Type	Call ID	Before Noise (s)	After Noise (s)	Notes
+     1	Spectrogram 1	5	134.940312900	136.462373900	16.041	27.088	134.9405	five_rec_20231031_114935.wav	Fin	1	4	3	
+     
+     Raven Pro is given the multichannel  audiofiles made by same_timestamps_multichannel_audio.m and Raven Pro does put the correct data in the
+     selection table. Kristin Hodge showed us how to do this.
+ 
+
+12Mar 2025 15:10 serval laptop.  commit. Will be changeset 6
+----------------------------------------------------------------------------------------------
+
+todo: 2Feb2025 data_prepare.py currently sets the min/max frequencies of whale calls
+                to be same for each whale with same Call  ID. It takes min of mins  and
+		max of maxes right now.  the future, we should
+		change this to  be different for each Channel.
+
+todo: 2Feb2025 use num_chan in data_prepare.py to check # channels is audiofile from raven pro
+      	       use sample_rate "                        audiofile from raven pro
+
+
+
+How to Use Visual Studio 2022 Release to run this program:
+
+Before we do anything with Visual Studio, it is very important that a copy of the repository is made with a separate name to ensure that
+nothing in the repository itself is changed.
+
+First we need to upload the repository as a folder into visual studio to start working.
+
+To set up the environment, we need to make sure we callibrate visual studio to use Python version 3, and also download the correct versions
+of the libraries being used. The libraries used can be found in needed_python_libraries.txt.
+
+We use the following commands in the visual studio terminal to install the correct libraries and versions:
+See needed_python_libraries.txt for correct version.
+pip install numpy==2.0.2pip install sortedcontainers==2.4.0
+pip install soundfile==0.13.0
+pip install pandas==2.2.3
+pip install scipy==1.15.0
+pip install sortedcontainers==2.4.0
+pip install librosa==0.10.2.post1
+
+Once this is all set up, we can run data_prepare.py

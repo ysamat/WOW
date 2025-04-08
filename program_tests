@@ -1,0 +1,24 @@
+Tests of software in raven_to_sbe_info_files_changes/
+
+Program                                How Tested                                               Who          When
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+data_prepare.py               -Provided two hour-long multichannel audiofiles to RavenPro.
+			       RavenPro outputted its selection table with selections
+			       from both audiofiles.  Then inputted the selection table,
+			       the two multichannel audio files to data_prepare.py, which
+			       outputted sound_N.wav and info_N files.  The sound_N.wav
+			       files were imported back into RavenPro and those signals
+			       looked like those displayed with RavenPro from  the two
+			       hour-long multichannel audiofiles. This means data_prepare.py
+			       appears to be able to retrieve correct data from two
+			       hour-long multichannel audiofiles. This worked using
+			       software from changeset 4. This test result is documented
+			       in changeset 5.                                                 jspies       11Mar2025 17:17
+                              -changeset 6: worked with new data in Raven selection table.
+			      Yash Samat ran data_prepare.py with new table, sent sound
+			      files to Kristin Hodge, and she verified spectrograms from
+			      sound_N.wav files look like sounds she boxed with Raven Pro.     jspies       12Mar2025 15:03
+
+
+
+

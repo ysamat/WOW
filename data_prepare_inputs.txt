@@ -1,0 +1,39 @@
+# Name of data selection table outputted by raven pro
+C:\\Users\\samat\\wow_03122025\\five_rec_20231031_114935.txt
+# Specify the path to folder where wav/aif/flac file resides that raven pro read; no ending slash needed
+# something.wav or something.aif or something.flac
+C:\\Users\\samat\\wow_03122025
+# Name of output path -> this is where the outputed files will be located e.g. info_q, sound_q.wav as defined by data_intake_sbe_2d.m
+C:\\Users\\samat\\wow_03122025\\output
+# Specify number of receivers in experiment. Same number as in data_intake_sbe_2d.m. This may exceed number channels in audiofile from Raven Pro.
+5
+# Channel number mapping old to new
+# old: channel number in raven pro. Equals column 3 in the raven pro data selection table. Column 3 heading label is 'Channel'
+# new: it is the sound file receiver number inputed to sbe as defined by data_intake_sbe_2d.m
+{5: 1, 2: 2, 3: 3, 4: 4, 1: 5}
+# Channel number mapping new to old
+{1: 5, 2: 2, 3: 3, 4: 4, 5: 1}
+# Specify the old channel number which will become sound file receiver number 1 for sbe. This is sbe's reference receiver.
+# There has to be at least one sound selected on the reference receiver.
+5
+# Specify the maximum distance (m) that th(e animal can be detected from any receiver.
+100000
+# Specify minimum vertical z coordinate of calling animal (m) -> z is positive up and zero at the ocean surface
+-100
+# Specify maximum vertical z coordinate of calling animal (m)
+0
+# Specify minimum 3D speed of animal (m/s) -> it must always be 0
+0
+# Specify maximum 3D speed of animal (m/s)
+13
+# Specify minimum three-dimensional effective speed of sound (m/s) between animal and any receiver. Row has two values, separated by space.
+# Value must be correct with confidence of 100%.  If value unknown to you, set to -1. If unknown, Scientific Innovations will provide them.
+# "Effective speed" is the straight-line distance between animal and a receiver divided by how long it takes sound to go between them.
+1430
+# Same as above, except is maximum three-dimensional effective speed.
+1500
+# Specify same_object parameter as defined by data_intake_sbe_2d.m. Recommend setting to 0 unless you speak with John Spiesberger first.
+0
+# Maximum duration (s) of emitted call. If unknown, enter an upper bound, and it must be greater than zero.
+# This does not count propagation effects of sound through water or air. This is simply the maximum duration of the emitted sound.
+2
