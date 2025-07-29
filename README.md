@@ -1,36 +1,95 @@
 # 🐋 Raven to SBE Info File Converter – Whale Localization Preprocessing Tool
 
-This repository contains preprocessing code developed for a whale conservation research project in collaboration with **Dr. John Spiesberger** at the University of Pennsylvania. The scripts convert acoustic data from Raven output into a format suitable for SBE (Source Bearing Estimation) localization analysis.
+This repository contains a Mercurial-tracked Python tool developed for preprocessing passive acoustic data from *Raven Pro* into a format suitable for *SBE (Source Bearing Estimation)* localization analysis. It was originally developed by Yu Shiu (Cornell University) and significantly updated by Yash Samat for cross-platform compatibility, functionality, and flexibility.
+
+---
 
 ## 🔍 Project Overview
 
-Increased underwater noise from offshore wind energy and naval sonar is disrupting whale communication and migration. This project supports conservation efforts by enabling more accurate localization of whale vocalizations through passive acoustic monitoring.
+Human-generated underwater noise—such as from offshore wind energy and naval sonar—is interfering with whale communication and migration. This tool helps marine biologists and researchers localize whale calls by converting timestamped acoustic data from *Raven Pro* into a format readable by localization models. The output includes standardized `info_N` and `sound_N.wav` files required for Time-Delay-of-Arrival (TDOA) analysis.
 
-## 🤝 Collaboration
+---
 
-This project was conducted under the guidance of **Dr. John Spiesberger**, whose research focuses on underwater acoustics and marine mammal localization. I worked closely with Dr. Spiesberger to develop tools that help analyze time-synchronized recordings collected from multiple ocean-bottom receivers.
+## 🛠️ What the Code Does
 
-## 🛠 What the Code Does
+- Converts selection tables and multichannel audio files exported from *Raven Pro* into `info_N` and `sound_N.wav` files.
+- Handles multiple receiver channels and vocalization annotations.
+- Uses dynamically loaded settings via `data_prepare_inputs.txt` for flexibility across experiments.
+- Computes accurate frequency bounds per call while resolving inconsistencies in selection data.
+- Supports additional noise buffer columns ("Before Noise" and "After Noise") in newer Raven exports.
+- Ensures compatibility with Windows and Linux environments (tested with Visual Studio and `hg` versioning).
+- Modularizes settings input parsing (`read_data_prepare_inputs.py`) and streamlines error handling.
+- Extracts sample rates directly from audio files (`open_sound.py`).
+- Includes a full changelog (via Mercurial commits) documenting improvements from hardcoded scripts to generalized and user-configurable workflows.
 
-- Converts raw `.txt` files from the **Raven Pro** acoustic software into standardized info files for use with **SBE localization tools**.
-- Parses and formats timestamped vocalization events across multiple hydrophones.
-- Prepares data for time-delay-of-arrival (TDOA) analysis used in locating whale positions.
+---
 
 ## 🧪 Tech Stack
 
 - Python 3
-- Built-in libraries (`os`, `csv`, `datetime`, etc.)
+- Libraries: `numpy`, `pandas`, `soundfile`, `scipy`, `sortedcontainers`, `librosa`
+- Tools: *Raven Pro*, Mercurial (hg), Visual Studio 2022 (Windows), Linux
+
+---
+
+## 📁 Repository Structure
+
+```
+data_prepare.py               # Main orchestration script  
+read_data_prepare_inputs.py   # Reads experiment configuration  
+open_sound.py                 # Audio file loader + sample rate parser  
+SampleStream.py               # Handles audio stream history (updated)  
+needed_python_libraries.txt   # Required pip dependencies with versions  
+data_prepare_inputs.txt       # Editable config file for preprocessing  
+program_tests/                # Test logs and expected outputs  
+__pycache__/                  # Auto-generated cache files  
+```
+
+---
+
+## 💻 Setup Instructions (Windows, Visual Studio 2022)
+
+1. **Clone the repository** (or make a working copy to avoid changing the original).
+2. **Open Visual Studio**, load the project folder, and set Python 3 as the interpreter.
+3. **Install Dependencies**  
+   Use the terminal to install packages (see `needed_python_libraries.txt`):
+
+   ```bash
+   pip install numpy==2.0.2
+   pip install sortedcontainers==2.4.0
+   pip install soundfile==0.13.0
+   pip install pandas==2.2.3
+   pip install scipy==1.15.0
+   pip install librosa==0.10.2.post1
+   ```
+
+4. **Prepare Input Files**
+   - Place Raven Pro `.txt` selection tables and multichannel `.wav` files in a working folder.
+   - Update `data_prepare_inputs.txt` accordingly.
+5. **Run the Code**
+   - Execute `data_prepare.py` to generate the output `info_N` and `sound_N.wav` files.
+
+---
 
 ## 🌊 Research Context
 
-This preprocessing pipeline was part of an ongoing oceanographic study that aims to track whale movement patterns in the presence of human-made noise. It contributes to sustainable offshore energy development and marine species protection.
+This preprocessing pipeline is part of an oceanographic effort to map whale movement patterns in the context of increased anthropogenic noise. The resulting data supports whale conservation, sustainable offshore development, and marine spatial planning.
+
+---
+
+## 🤝 Collaboration
+
+Developed in collaboration with Dr. John Spiesberger (University of Pennsylvania), who provided the original research direction and guidance. Original software credit goes to Yu Shiu, with extensive cross-platform updates and enhancements by Yash Samat.
+
+---
 
 ## 👋 About Me
 
-I’m **Yash Samat**, an AI student at the University of Pennsylvania passionate about combining tech with environmental sustainability. This project reflects my ongoing work in conservation-driven machine learning and acoustic signal processing.
+I’m **Yash Samat**, an AI undergraduate at the University of Pennsylvania passionate about merging environmental sustainability with signal processing and intelligent systems. This tool reflects my dedication to conservation-focused engineering and real-world data applications.
+
+---
 
 ## 📫 Contact
 
-Feel free to reach out:
-- Email: ysamat@seas.upenn.edu
-- LinkedIn: [linkedin.com/in/ysamat](https://www.linkedin.com/in/ysamat)
+- 📧 Email: [ysamat@seas.upenn.edu](mailto:ysamat@seas.upenn.edu)  
+- 🔗 LinkedIn: [linkedin.com/in/ysamat](https://linkedin.com/in/ysamat)
