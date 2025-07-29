@@ -21,12 +21,6 @@ This project was conducted under the guidance of **Dr. John Spiesberger**, whose
 - Python 3
 - Built-in libraries (`os`, `csv`, `datetime`, etc.)
 
-## 📁 File Structure
-
-- `converter.py` – Main script to process Raven files.
-- `example_data/` – Sample `.txt` input files.
-- `output/` – Where formatted `.info` files are stored.
-
 ## 🌊 Research Context
 
 This preprocessing pipeline was part of an ongoing oceanographic study that aims to track whale movement patterns in the presence of human-made noise. It contributes to sustainable offshore energy development and marine species protection.
